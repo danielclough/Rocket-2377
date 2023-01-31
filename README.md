@@ -174,7 +174,7 @@ stat size: 2093182
 
 I started to realize that file size can't be the only cause, so I tried making `file-lg.txt` and `file-sm.txt` the same size.
 
-I was not able to reproduce failing at the same size more than once.
+> I was not able to reproduce failing at the same size more than once.
 
 I fixed the error to show clearly that I'm getting the same error from curl and `post_file.py`.
 
@@ -207,3 +207,32 @@ Traceback (most recent call last):
     assert r.text == os.path.getsize(file_lg), 'different file size'
 AssertionError: different file size
 ```
+
+## Experiment 3
+
+The current working POST with Rocket:
+```rs
+Content-Type: ContentType(MediaType { source: Custom("multipart/form-data; boundary=04e748fd5c1edb299e03ce40251a634a"), top: (0, 9), sub: (10, 19), params: Dynamic([((21, 29), (30, 62))]) })
+file: "file-sm.txt" size: 2096373
+```
+
+The boundry and content lenght for the curl request is:
+```rs
+curl -v -H "Content-Type:multipart/form-data" -F files=@file-sm.txt \
+http://127.0.0.1:8000/upload
+
+> Content-Length: 2096563
+> Content-Type: multipart/form-data; boundary=------------------------a77db0822c11386a
+```
+
+> A difference of 190.
+
+## Docs Investigation 1
+
+I found the reason for the cutoff.
+
+[Built-in Limits](https://api.rocket.rs/v0.5-rc/rocket/data/struct.Limits.html#built-in-limits)
+
+| Limit Name |	Default	Type |	Description |
+|--|--|--|
+| data-form	2MiB |	Form |	entire data-based form |
