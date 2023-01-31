@@ -4,7 +4,24 @@ Executing `post_file.py` trys to POST two files:
     `file-sm.txt (2MB)` and `file-lg.txt (2.1MB)`.
 The first works and the second fails.
 
-Stdout from `python3 post_file.py`:
+In Rocket's Log:
+```rs
+POST /upload multipart/form-data:
+   >> Matched: (upload) POST /upload multipart/form-data
+Content-Type: ContentType(MediaType { source: Custom("multipart/form-data; boundary=c8deca0ab02b6d2195caac176c42f273"), top: (0, 9), sub: (10, 19), params: Dynamic([((21, 29), (30, 62))]) })
+file: "file-sm.txt" size: 2092209
+   >> Outcome: Success
+   >> Response succeeded.
+
+POST /upload multipart/form-data:
+   >> Matched: (upload) POST /upload multipart/form-data
+   >> Data guard `Form < FileUpload < '_ > >` failed: Errors([Error { name: Some("name"), value: None, kind: Missing, entity: Field }, Error { name: Some("file"), value: None, kind: Missing, entity: Field }]).
+   >> Outcome: Failure
+   >> No 422 catcher registered. Using Rocket default.
+   >> Response succeeded.
+```
+
+Stdout:
 ```rs
 small file
 reported size: 2092209
@@ -24,35 +41,19 @@ Traceback (most recent call last):
 json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
 ```
 
+### with curl
+```sh
+curl -v -H "Content-Type:multipart/form-data" -F files=file-sm.txt \
+  http://127.0.0.1:8000/upload
+```
 In Rocket's Log:
 ```rs
 POST /upload multipart/form-data:
    >> Matched: (upload) POST /upload multipart/form-data
-Content-Type: ContentType(MediaType { source: Custom("multipart/form-data; boundary=c8deca0ab02b6d2195caac176c42f273"), top: (0, 9), sub: (10, 19), params: Dynamic([((21, 29), (30, 62))]) })
-file: "file-sm.txt" size: 2092209
-   >> Outcome: Success
-   >> Response succeeded.
-
-POST /upload multipart/form-data:
-   >> Matched: (upload) POST /upload multipart/form-data
    >> Data guard `Form < FileUpload < '_ > >` failed: Errors([Error { name: Some("name"), value: None, kind: Missing, entity: Field }, Error { name: Some("file"), value: None, kind: Missing, entity: Field }]).
    >> Outcome: Failure
    >> No 422 catcher registered. Using Rocket default.
    >> Response succeeded.
-```
-
-```rs
-POST /upload multipart/form-data:
-   >> Matched: (upload) POST /upload multipart/form-data
-   >> Data guard `Form < FileUpload < '_ > >` failed: Errors([Error { name: Some("name"), value: None, kind: Missing, entity: Field }, Error { name: Some("file"), value: None, kind: Missing, entity: Field }]).
-   >> Outcome: Failure
-   >> No 422 catcher registered. Using Rocket default.
-   >> Response succeeded.
-```
-
-```sh
-curl -v -H "Content-Type:multipart/form-data" -F files=file-sm.txt \
-  http://127.0.0.1:8000/upload
 ```
 Stdout:
 ```py
