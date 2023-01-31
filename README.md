@@ -16,7 +16,7 @@ Full logs can be found in [troubleshooting.md](https://github.com/danielclough/R
 -rw-rw-r-- 1 daniel daniel  954715 Jan 30 21:57 file-xs.txt
 ```
 
-## Try large file with python (fail)
+## Try file-lg.txt (2097506) with python (expected fail)
 
 ```
 Traceback (most recent call last):
@@ -25,14 +25,14 @@ Traceback (most recent call last):
 AssertionError: different file size due to response being html
 ```
 
-## Try small file with python
+## Try file-sm.txt (2096373) with python (unexpected pass)
 
 ```
 reported size: 2096373
 stat size: 2096373
 ```
 
-## Try with small file with curl (fail)
+## Try file-sm.txt (2096373) with curl (expected fail)
 
 ```
 <!DOCTYPE html>
@@ -55,7 +55,7 @@ stat size: 2096373
 ```
 
 
-## Try x-small file with curl
+## Try file-xs.txt (954715) with curl (expected pass)
 
 ```
 {"name":"file-xs.txt","fsize":954715}

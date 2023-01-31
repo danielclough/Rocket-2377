@@ -9,24 +9,24 @@ echo '```' >> README.md
 ls -al file-lg.txt file-sm.txt file-xs.txt >> README.md
 echo '```' >> README.md
 
-echo -e "\n## Try large file with python (fail)\n" >> README.md
+echo -e "\n## Try file-lg.txt (2097506) with python (expected fail)\n" >> README.md
 echo '```' >> README.md
 python3 post_lg.py 2>> README.md
 echo '```' >> README.md
 
-echo -e "\n## Try small file with python\n" >> README.md
+echo -e "\n## Try file-sm.txt (2096373) with python (unexpected pass)\n" >> README.md
 echo '```' >> README.md
 python3 post_sm.py >> README.md
 echo '```' >> README.md
 
-echo -e "\n## Try with small file with curl (fail)\n" >> README.md
+echo -e "\n## Try file-sm.txt (2096373) with curl (expected fail)\n" >> README.md
 echo '```' >> README.md
 curl -v \
  -F file=@file-sm.txt -F name=file-sm.txt \
  http://127.0.0.1:8000/upload  >> README.md
 echo -e '\n```' >> README.md
 
-echo -e "\n\n## Try x-small file with curl\n" >> README.md
+echo -e "\n\n## Try file-xs.txt (954715) with curl (expected pass)\n" >> README.md
 echo '```' >> README.md
 curl -v \
  -F file=@file-xs.txt -F name=file-xs.txt \
