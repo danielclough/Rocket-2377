@@ -4,3 +4,5 @@
 |--|--|
 | [test1.md](https://github.com/danielclough/Rocket-2377/blob/main/test2-test1.md) | Rocket treats "out of the box" `curl` vs `python-requests` POSTs differenlty. |
 | [test2.md](https://github.com/danielclough/Rocket-2377/blob/main/test2-test2.md) | That the difference is probably related to `requests` using `Accept-Encoding: gzip, deflate` |
+
+I guess the problem relates to how Rocket classifies and parses compressed data vs raw data.
