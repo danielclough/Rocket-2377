@@ -233,6 +233,6 @@ I found the reason for the cutoff.
 
 [Built-in Limits](https://api.rocket.rs/v0.5-rc/rocket/data/struct.Limits.html#built-in-limits)
 
-| Limit Name |	Default	Type |	Description |
-|--|--|--|
-| data-form	2MiB |	Form |	entire data-based form |
+| Limit Name |	Default	| Type |	Description |
+|--|--|--|--|
+| data-form |	2MiB |	Form |	entire data-based form |
