@@ -173,24 +173,36 @@ stat size: 2093182
 
 I started to realize that file size can't be the only cause, so I tried making `file-lg.txt` and `file-sm.txt` the same size.
 
-I am also including the log which shows that I'm getting the same error from curl and the py script.
+I was not able to reproduce failing at the same size more than once.
+
+I fixed the error to show clearly that I'm getting the same error from curl and `post_file.py`.
 
 ```rs
-python3 post_file.py 
 small file
 reported size: 2096373
 stat size: 2096373
 
 large file
-reported size: {"name":"file-lg.txt","fsize":2096373}
-stat size: 2096373
+reported size: <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>422 Unprocessable Entity</title>
+</head>
+<body align="center">
+    <div role="main" align="center">
+        <h1>422: Unprocessable Entity</h1>
+        <p>The request was well-formed but was unable to be followed due to semantic errors.</p>
+        <hr />
+    </div>
+    <div role="contentinfo" align="center">
+        <small>Rocket</small>
+    </div>
+</body>
+</html>
+stat size: 2097506
 Traceback (most recent call last):
   File "/home/daniel/git/Rocket-2377/post_file.py", line 21, in <module>
     assert r.text == os.path.getsize(file_lg), 'different file size'
 AssertionError: different file size
-
-daniel@seattle:~/git/Rocket-2377$ ll
-...
--rw-rw-r--  1 daniel daniel 2096373 Jan 30 18:22 file-lg.txt
--rw-rw-r--  1 daniel daniel 2096373 Jan 30 18:21 file-sm.txt
 ```
