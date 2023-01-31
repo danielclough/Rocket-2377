@@ -162,6 +162,7 @@ I found the reason for the cutoff.
 | Limit Name |	Default	| Type |	Description |
 |--|--|--|--|
 | data-form |	2MiB |	Form |	entire data-based form |
+| file |	1MiB	| TempFile |	TempFile data guard or form field |
 | json	| 1MiB |	Json	| JSON data and form payloads |
 
 ## Experiment 5
