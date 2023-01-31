@@ -16,6 +16,6 @@ file_lg = './file-lg.txt'
 files = { 'file': open(file_lg, 'rb'), 'name': os.path.basename(file_lg) }
 r = requests.post('http://127.0.0.1:8000/upload', files=files)
 
-print("reported size: {}".format(r.json()['fsize']))
+print("reported size: {}".format(r.text))
 print("stat size: {}".format(os.path.getsize(file_lg)))
 assert r.json()['fsize'] == os.path.getsize(file_lg), 'different file size'

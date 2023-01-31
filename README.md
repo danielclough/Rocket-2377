@@ -168,3 +168,52 @@ Running again with no changes reports correct size:
 reported size: 2093182
 stat size: 2093182
 ```
+
+## Experiment 3
+
+I started to realize that file size can't be the only cause, so I tried making `file-lg.txt` and `file-sm.txt` the same size.
+
+I am also including the log which shows that I'm getting the same error from curl and the py script.
+
+```rs
+small file
+reported size: 1672213
+stat size: 1672213
+
+large file
+reported size: <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>422 Unprocessable Entity</title>
+</head>
+<body align="center">
+    <div role="main" align="center">
+        <h1>422: Unprocessable Entity</h1>
+        <p>The request was well-formed but was unable to be followed due to semantic errors.</p>
+        <hr />
+    </div>
+    <div role="contentinfo" align="center">
+        <small>Rocket</small>
+    </div>
+</body>
+</html>
+stat size: 2097506
+Traceback (most recent call last):
+  File "/home/daniel/git/Rocket-2377/post_file.py", line 21, in <module>
+    assert r.json()['fsize'] == os.path.getsize(file_lg), 'different file size'
+  File "/usr/lib/python3/dist-packages/requests/models.py", line 900, in json
+    return complexjson.loads(self.text, **kwargs)
+  File "/usr/lib/python3.10/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.10/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python3.10/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+daniel@seattle:~/git/Rocket-2377$ ll
+...
+-rw-rw-r--  1 daniel daniel 2097506 Jan 30 18:03 file-lg.txt
+-rw-rw-r--  1 daniel daniel 2097506 Jan 30 18:10 file-sm.txt
+```
