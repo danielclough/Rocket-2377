@@ -1,4 +1,3 @@
-
 ## Experiement 1
 Executing `post_file.py` trys to POST two files:
     `file-sm.txt (2MB)` and `file-lg.txt (2.1MB)`.
@@ -39,61 +38,6 @@ Traceback (most recent call last):
   File "/usr/lib/python3.10/json/decoder.py", line 355, in raw_decode
     raise JSONDecodeError("Expecting value", s, err.value) from None
 json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
-```
-
-### with curl
-```sh
-curl -v -H "Content-Type:multipart/form-data" -F files=file-sm.txt \
-  http://127.0.0.1:8000/upload
-```
-In Rocket's Log:
-```rs
-POST /upload multipart/form-data:
-   >> Matched: (upload) POST /upload multipart/form-data
-   >> Data guard `Form < FileUpload < '_ > >` failed: Errors([Error { name: Some("name"), value: None, kind: Missing, entity: Field }, Error { name: Some("file"), value: None, kind: Missing, entity: Field }]).
-   >> Outcome: Failure
-   >> No 422 catcher registered. Using Rocket default.
-   >> Response succeeded.
-```
-Stdout:
-```py
-*   Trying 127.0.0.1:8000...
-* Connected to 127.0.0.1 (127.0.0.1) port 8000 (#0)
-> POST /upload HTTP/1.1
-> Host: 127.0.0.1:8000
-> User-Agent: curl/7.81.0
-> Accept: */*
-> Content-Length: 151
-> Content-Type: multipart/form-data; boundary=------------------------44d852a6541e1980
-> 
-* We are completely uploaded and fine
-* Mark bundle as not supporting multiuse
-< HTTP/1.1 422 Unprocessable Entity
-< content-type: text/html; charset=utf-8
-< server: Rocket
-< x-content-type-options: nosniff
-< permissions-policy: interest-cohort=()
-< x-frame-options: SAMEORIGIN
-< content-length: 444
-< date: Tue, 31 Jan 2023 00:52:23 GMT
-< 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>422 Unprocessable Entity</title>
-</head>
-<body align="center">
-    <div role="main" align="center">
-        <h1>422: Unprocessable Entity</h1>
-        <p>The request was well-formed but was unable to be followed due to semantic errors.</p>
-        <hr />
-    </div>
-    <div role="contentinfo" align="center">
-        <small>Rocket</small>
-    </div>
-</body>
-* Connection #0 to host 127.0.0.1 left intact
 ```
 
 ## Experiement 2
@@ -208,24 +152,6 @@ Traceback (most recent call last):
 AssertionError: different file size
 ```
 
-## Experiment 4
-
-The current working POST with Rocket:
-```rs
-Content-Type: ContentType(MediaType { source: Custom("multipart/form-data; boundary=04e748fd5c1edb299e03ce40251a634a"), top: (0, 9), sub: (10, 19), params: Dynamic([((21, 29), (30, 62))]) })
-file: "file-sm.txt" size: 2096373
-```
-
-The boundry and content lenght for the curl request is:
-```rs
-curl -v -H "Content-Type:multipart/form-data" -F files=@file-sm.txt \
-http://127.0.0.1:8000/upload
-
-> Content-Length: 2096563
-> Content-Type: multipart/form-data; boundary=------------------------a77db0822c11386a
-```
-
-> A difference of 190.
 
 ## Docs Investigation 1
 
@@ -236,14 +162,10 @@ I found the reason for the cutoff.
 | Limit Name |	Default	| Type |	Description |
 |--|--|--|--|
 | data-form |	2MiB |	Form |	entire data-based form |
-
-
+| json	| 1MiB |	Json	| JSON data and form payloads |
 
 ## Experiment 5
 
-Back to curl
-
-I noticed that I needed file and name, not files.
 ```
 curl -v -H "Content-Type:multipart/form-data" \
  -F file=@file-sm.txt -F name=file-sm.txt \
@@ -251,6 +173,9 @@ curl -v -H "Content-Type:multipart/form-data" \
 ```
 
 I notice the `InvalidLength` is max 1048576, and curl is sending a length of 2096562.
+This is the same file that works when sending with `post_sm.py`.
+
+
 ```rs
 POST /upload multipart/form-data:
    >> Matched: (upload) POST /upload multipart/form-data
@@ -295,4 +220,3 @@ curl -v \
 ```
 
 > It works!
-It seems that there may be two different limits.
