@@ -9,7 +9,7 @@ echo '```' >> test1.md
 ls -al file-lg.txt file-sm.txt file-xs.txt >> test1.md
 echo '```' >> test1.md
 
-echo -e "\n## Try file-lg.txt (2097506) with python (expected fail)\n" >> test1.md
+echo -e "\n## Try file-lg.txt (2097506) with python (expected pass)\n" >> test1.md
 echo '```' >> test1.md
 python3 post_lg.py 2>> test1.md
 echo '```' >> test1.md
@@ -19,7 +19,7 @@ echo '```' >> test1.md
 python3 post_sm.py >> test1.md
 echo '```' >> test1.md
 
-echo -e "\n## Try file-sm.txt (2096373) with curl (expected fail)\n" >> test1.md
+echo -e "\n## Try file-sm.txt (2096373) with curl (expected pass)\n" >> test1.md
 echo '```' >> test1.md
 curl -v \
  -F file=@file-sm.txt -F name=file-sm.txt \
