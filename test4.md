@@ -51,6 +51,52 @@ stat size: 2097506
 </html>
 ```
 
+## Try file-sm.txt (2097506) with python (expect pass)
+
+```
+reported size: <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>422 Unprocessable Entity</title>
+</head>
+<body align="center">
+    <div role="main" align="center">
+        <h1>422: Unprocessable Entity</h1>
+        <p>The request was well-formed but was unable to be followed due to semantic errors.</p>
+        <hr />
+    </div>
+    <div role="contentinfo" align="center">
+        <small>Rocket</small>
+    </div>
+</body>
+</html>
+stat size: 2096373
+```
+
+
+## Try file-sm.txt (2097506) with curl (expect pass)
+
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>422 Unprocessable Entity</title>
+</head>
+<body align="center">
+    <div role="main" align="center">
+        <h1>422: Unprocessable Entity</h1>
+        <p>The request was well-formed but was unable to be followed due to semantic errors.</p>
+        <hr />
+    </div>
+    <div role="contentinfo" align="center">
+        <small>Rocket</small>
+    </div>
+</body>
+</html>
+```
+
 ## Try file-xs.txt (954715) with python (expect pass)
 
 ```
@@ -62,21 +108,5 @@ stat size: 954715
 ## Try file-xs.txt (954715) with curl (expect pass)
 
 ```
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>413 Payload Too Large</title>
-</head>
-<body align="center">
-    <div role="main" align="center">
-        <h1>413: Payload Too Large</h1>
-        <p>The request is larger than the server is willing or able to process.</p>
-        <hr />
-    </div>
-    <div role="contentinfo" align="center">
-        <small>Rocket</small>
-    </div>
-</body>
-</html>
+{"name":"file-xs.txt","fsize":954715}
 ```

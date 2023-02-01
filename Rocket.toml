@@ -1,2 +1,5 @@
 [global.limits]
+file = 999999
 form = 999999
+data-form = 999999
+json = 999999

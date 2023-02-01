@@ -55,3 +55,18 @@ POST /upload multipart/form-data:
    >> No 413 catcher registered. Using Rocket default.
    >> Response succeeded.
 ```
+
+Reverting the stuct (from last test) results in the original pattern with only the change in failure caused by `Rocket.toml`.
+
+## Experiement 2
+
+Trying more raised limits leads to strange consequences leading to the previously passing `post_sm.py` to fail with `422 Unprocessable Entity`
+
+```
+[global.limits]
+form = 999999
+form = 999999
+data-form = 999999
+json = 999999
+```
+

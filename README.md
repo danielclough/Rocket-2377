@@ -21,7 +21,9 @@ Is it possible that `requests` is considered a `data-form` and `curl` as a `file
 | Test | Demonstrates |
 |--|--|
 | [test1.md](https://github.com/danielclough/Rocket-2377/blob/main/test2.md) | Rocket treats "out of the box" `curl` vs `python-requests` POSTs differenlty. |
-| [test2.md](https://github.com/danielclough/Rocket-2377/blob/main/test2.md) | That the difference is probably related to `requests` using `Accept-Encoding: gzip, deflate` |
-|[test3.md](https://github.com/danielclough/Rocket-2377/blob/main/test3.md)| Null Result after changing struct from `TempFile` to `String` |
+| [test2.md](https://github.com/danielclough/Rocket-2377/blob/main/test2.md) | The difference is probably related to `requests` using `Accept-Encoding: gzip, deflate` |
+|[test3.md](https://github.com/danielclough/Rocket-2377/blob/main/test3.md)| No change after changing struct from `TempFile` to `String` |
+|[test4.md](https://github.com/danielclough/Rocket-2377/blob/main/test4.md)| Adjusting Limits affects `curl` and `requests` POSTs differently, struct change caused issues. |
+
 
 I guess the problem relates to how Rocket classifies and parses compressed data vs raw data, perhaps related [Built-in Limits](https://api.rocket.rs/v0.5-rc/rocket/data/struct.Limits.html#built-in-limits).

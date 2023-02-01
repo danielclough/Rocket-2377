@@ -15,6 +15,18 @@ curl -v \
  http://127.0.0.1:8000/upload  >> test4.md
 echo -e '\n```' >> test4.md
 
+echo -e "\n## Try file-sm.txt (2097506) with python (expect pass)\n" >> test4.md
+echo '```' >> test4.md
+python3 post_sm.py >>  test4.md
+echo '```' >> test4.md
+
+echo -e "\n\n## Try file-sm.txt (2097506) with curl (expect pass)\n" >> test4.md
+echo '```' >> test4.md
+curl -v \
+ -F file=@file-sm.txt -F name=file-sm.txt \
+ http://127.0.0.1:8000/upload  >> test4.md
+echo -e '\n```' >> test4.md
+
 echo -e "\n## Try file-xs.txt (954715) with python (expect pass)\n" >> test4.md
 echo '```' >> test4.md
 python3 post_xs.py >> test4.md
